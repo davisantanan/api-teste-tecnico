@@ -14,6 +14,10 @@
     if ($method === 'POST') {
         $data = json_decode(file_get_contents("php://input"));
         
+        function generateUniqueId(){
+            return md5(uniqid(mt_rand(), true));
+        }
+        
         if (
             !empty($data->email) 
             && !empty($data->nome)
@@ -27,6 +31,7 @@
             && !empty($data->estado)
             && !empty($data->envio) 
             ) {
+            $id = generateUniqueId();
             $email = $data->email;
             $nome = $data->nome;
             $telefone = $data->telefone;
@@ -41,7 +46,8 @@
             $envio = $data->envio;
         
             $fileData = 
-            "Email: $email\n
+            "ID: $id\n
+            Email: $email\n
             Nome: $nome\n
             Telefone: $telefone\n
             CPF: $cpf\n
