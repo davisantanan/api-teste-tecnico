@@ -1,0 +1,26 @@
+Email: a@a
+
+            Nome: a a
+
+            Telefone: (11) 11111-1111
+
+            CPF: 616.033.845-53
+
+            CEP: 53215-615
+
+            Endereco: as
+
+            Numero: sb
+
+            Complemento: 
+
+            Bairro: asdas
+
+            Cidade: dsaasd
+
+            Estado: BA
+
+            Envio: R$ 13,70
+
+   
+            
