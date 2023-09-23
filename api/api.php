@@ -11,10 +11,8 @@
     die();
     }
    
-    
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($method === 'POST') {
         $data = json_decode(file_get_contents("php://input"));
-        
         
         if (
             !empty($data->email) 
@@ -41,8 +39,7 @@
             $cidade = $data->cidade;
             $estado = $data->estado;
             $envio = $data->envio;
-            
-
+        
             $fileData = 
             "Email: $email\n
             Nome: $nome\n
@@ -58,9 +55,7 @@
             Envio: $envio\n\n   
             ";
             
-            
             $filePath = "data.txt"; 
-            
             
             if ($fileHandle = fopen($filePath, 'a')) {
                 
@@ -80,7 +75,40 @@
             http_response_code(400); 
             echo json_encode(array("message" => "Dados incompletos."));
         }
-    } else {
+    } elseif($method === 'GET') {
+        $filePath = "data.txt";
+
+        if (file_exists($filePath)) {
+            $fileContents = file_get_contents($filePath);
+            $data = explode("\n\n", $fileContents);
+            $formattedData = [];
+    
+            foreach ($data as $entry) {
+                $entry = str_replace("\r", '', $entry); 
+                $entryData = explode("\n", $entry);
+                $formattedEntry = [];
+        
+                foreach ($entryData as $line) {
+                    $line = trim($line); 
+                    if (!empty($line)) {
+                        list($key, $value) = explode(":", $line, 2); 
+                        $formattedEntry[$key] = $value;
+                    }
+                }
+        
+                if (!empty($formattedEntry)) {
+                    $formattedData[] = $formattedEntry;
+                }
+            }
+        
+            echo json_encode($formattedData);
+        } else {
+            http_response_code(404);
+            echo json_encode(array("message" => "Nenhum dado encontrado."));
+        }  
+    }
+    
+    else {
         http_response_code(405); 
         echo json_encode(array("message" => "Método não permitido."));
     }
